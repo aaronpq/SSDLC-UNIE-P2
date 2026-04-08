@@ -1,0 +1,171 @@
+Run started:2026-04-08 21:03:20.157262
+
+Test results:
+>> Issue: [B324:hashlib] Use of weak MD5 hash for security. Consider usedforsecurity=False
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b324_hashlib.html
+   Location: ./db/__init__.py:10:11
+9	def hash_password(password):
+10	    return hashlib.md5(password.encode()).hexdigest()
+11	
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/auth.py:14:28
+13	        conn = get_users_connection()
+14	        user = conn.execute("SELECT * FROM users WHERE username = '"+ username +"' AND password = '"+hash_password(password)+"'").fetchone()
+15	        conn.close()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies.py:48:33
+47	    if search:
+48	        companies = conn.execute("SELECT * FROM companies WHERE name LIKE '%" + search + "%'").fetchall()
+49	    else:
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies.py:68:27
+67	    conn = get_data_connection()
+68	    company = conn.execute("SELECT * FROM companies WHERE id = " + str(company_id)).fetchone()
+69	    comments = conn.execute("SELECT * FROM comments WHERE company_id = " + str(company_id)).fetchall()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies.py:69:28
+68	    company = conn.execute("SELECT * FROM companies WHERE id = " + str(company_id)).fetchone()
+69	    comments = conn.execute("SELECT * FROM comments WHERE company_id = " + str(company_id)).fetchall()
+70	    if request.method == 'POST':
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies.py:73:21
+72	        user = session.get('username')
+73	        conn.execute("INSERT INTO comments (company_id, user, comment) VALUES ("+str(company_id)+", '"+user+"', '"+comment+"')")
+74	        conn.commit()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies.py:104:21
+103	        conn = get_data_connection()
+104	        conn.execute("INSERT INTO companies (name, description, owner) VALUES ("+company_name+", '"+description+"', '"+owner+"')")
+105	        conn.commit()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies.py:117:27
+116	    conn = get_data_connection()
+117	    company = conn.execute("SELECT * FROM companies WHERE id = "+ str(company_id)).fetchone()
+118	    if not company:
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies.py:127:21
+126	        new_description = request.form['description']
+127	        conn.execute("UPDATE companies SET name = '"+new_name+"', description = '"+new_description+"' WHERE id = "+str(company_id))
+128	        conn.commit()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies_admin.py:22:21
+21	        conn = get_data_connection()
+22	        conn.execute("INSERT INTO companies (name, owner) VALUES ('"+ company_name+"', '"+owner+"')")
+23	        conn.commit()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies_admin.py:35:17
+34	    conn = get_data_connection()
+35	    conn.execute("DELETE FROM companies WHERE id = "+ company)
+36	    conn.execute("DELETE FROM comments WHERE company_id = " + company)
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/companies_admin.py:36:17
+35	    conn.execute("DELETE FROM companies WHERE id = "+ company)
+36	    conn.execute("DELETE FROM comments WHERE company_id = " + company)
+37	    conn.commit()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/users_admin.py:32:21
+31	    if company_id:
+32	        conn.execute("INSERT INTO users (username, password, role, company_id) VALUES ('"+username+"', '"+hash_password(password)+"', "+role+", "+company_id+")")
+33	    else:
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b608_hardcoded_sql_expressions.html
+   Location: ./routes/users_admin.py:34:21
+33	    else:
+34	        conn.execute("INSERT INTO users (username, password, role) VALUES ('"+username+"', '"+hash_password(password)+"', "+role+")")
+35	    conn.commit()
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'supersecretkey'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.7.10/plugins/b105_hardcoded_password_string.html
+   Location: ./server.py:4:17
+3	app = Flask(__name__)
+4	app.secret_key = 'supersecretkey'
+5	app.permanent_session_lifetime = 99999999
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 403
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 1
+		Medium: 13
+		High: 1
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 14
+		High: 1
+Files skipped (0):
