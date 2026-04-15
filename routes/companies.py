@@ -45,7 +45,11 @@ def list_companies():
     
     search = request.args.get('q', '')
     if search:
-        companies = conn.execute("SELECT * FROM companies WHERE name LIKE '%" + search + "%'").fetchall()
+        # El comodín % debe formar parte del parámetro enviado
+        query = "SELECT * FROM companies WHERE name LIKE ?"
+        search_param = f"%{search}%"
+        companies = conn.execute(query, (search_param,)).fetchall()
+        #companies = conn.execute("SELECT * FROM companies WHERE name LIKE '%" + search + "%'").fetchall()
     else:
         companies = conn.execute("SELECT * FROM companies").fetchall()
 
