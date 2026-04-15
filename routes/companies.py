@@ -74,7 +74,10 @@ def company_detail(company_id):
     if request.method == 'POST':
         comment = request.form['comment']
         user = session.get('username')
-        conn.execute("INSERT INTO comments (company_id, user, comment) VALUES ("+str(company_id)+", '"+user+"', '"+comment+"')")
+        #Corrección de inserción de comentarios
+        query = "INSERT INTO comments (company_id, user, comment) VALUES (?, ?, ?)"
+        conn.execute(query, (company_id, user, comment))
+        #conn.execute("INSERT INTO comments (company_id, user, comment) VALUES ("+str(company_id)+", '"+user+"', '"+comment+"')")
         conn.commit()
         conn.close()
         flash("Comment added successfully.", "success")
