@@ -3,6 +3,11 @@ from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    SESSION_COOKIE_SECURE=False 
+)
 csrf = CSRFProtect(app)
 app.permanent_session_lifetime = 99999999
 
