@@ -1,8 +1,9 @@
+import os
 from flask import Flask, render_template
 from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'
+app.secret_key = os.urandom(24)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
