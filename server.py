@@ -1,7 +1,9 @@
 from flask import Flask, render_template
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
+csrf = CSRFProtect(app)
 app.permanent_session_lifetime = 99999999
 
 @app.errorhandler(404)
