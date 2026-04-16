@@ -1,6 +1,8 @@
 from db import get_users_connection, hash_password
 from flask import request, redirect, render_template, session, flash
 from server import app
+#Nueva lib para hash con salt
+from werkzeug.security import check_password_hash
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -11,13 +13,14 @@ def login():
         username = request.form['username']
         password = request.form['password']
         conn = get_users_connection()
-        #Corrección del código (2 lineas)
-        query = "SELECT * FROM users WHERE username = ? AND password = ?"
-        user = conn.execute(query, (username, hash_password(password))).fetchone()
+        #Corrección del código tanto para SQLi como para HASH con salt
+        query = "SELECT * FROM users WHERE username = ?"
+        user = conn.execute(query, (username,)).fetchone()
         #user = conn.execute("SELECT * FROM users WHERE username = '"+ username +"' AND password = '"+hash_password(password)+"'").fetchone()
         conn.close()
         
-        if user:
+        #if user:
+        if user and check_password_hash(user['password'], password):
             session['user_id'] = user['id']
             session['username'] = user['username']
             session['role'] = user['role']
