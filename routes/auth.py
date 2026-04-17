@@ -3,6 +3,7 @@ from flask import request, redirect, render_template, session, flash
 from server import app
 #Nueva lib para hash con salt
 from werkzeug.security import check_password_hash
+from urllib.parse import urlparse # Importante para validar la URL
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -13,19 +14,22 @@ def login():
         username = request.form['username']
         password = request.form['password']
         conn = get_users_connection()
-        #Corrección del código tanto para SQLi como para HASH con salt
         query = "SELECT * FROM users WHERE username = ?"
         user = conn.execute(query, (username,)).fetchone()
-        #user = conn.execute("SELECT * FROM users WHERE username = '"+ username +"' AND password = '"+hash_password(password)+"'").fetchone()
         conn.close()
         
-        #if user:
         if user and check_password_hash(user['password'], password):
             session['user_id'] = user['id']
             session['username'] = user['username']
             session['role'] = user['role']
             session['company_id'] = user['company_id']
             session.permanent = True
+
+            # VALIDACIÓN ANTI OPEN REDIRECT
+            if not next_url.startswith('/') or urlparse(next_url).netloc != '':
+                # Si es maliciosa, forzamos el dashboard por seguridad
+                next_url = '/dashboard'
+
             return redirect(next_url)
         else:
             flash("Invalid username or password", "danger")
