@@ -1,64 +1,51 @@
-# NovaCorp — Company Management Platform
+# NovaCorp — Company Management Platform (Secured Edition)
 
-**NovaCorp Platform** is an internal web application for managing companies and their associated comments. It supports three roles (`admin`, `owner`, `user`) with different access levels.
+Este repositorio contiene la versión securizada de la plataforma interna de gestión de empresas de NovaCorp.
+El proyecto es el resultado de una auditoría de seguridad de código fuente (SAST) y un proceso de remediación detallado en el informe técnico adjunto.
 
----
+# Resumen de Seguridad
 
-## Installation
+Tras la evaluación inicial, la aplicación presentaba un nivel de riesgo Crítico. Se han remediado 12 vulnerabilidades principales siguiendo el estándar CVSS v3.1:
 
-```bash
+VULN-1: SQL Injection (Múltiples instancias) -> Corregido mediante consultas parametrizadas.
+VULN-2: Stored XSS -> Corregido mediante el uso de escape automático en plantillas.
+VULN-3: Ausencia de protección CSRF -> Corregido con la implementación de tokens de seguridad.
+VULN-5: Hash de contraseñas con MD5 -> Migrado a un sistema de hashing con salt.
+VULN-6: Clave secreta hardcodeada -> Actualizada por una clave de alta entropía.
+VULN-7: Modo debug activo -> Desactivado para el entorno de ejecución.
+VULN-10: Escalada de privilegios -> Corregido mediante validación estricta de parámetros.
+
+# Instalación y Ejecución
+
+Siga estos pasos para desplegar la plataforma en un entorno local:
+
+1. Clonar el repositorio:
+
+   git clone [https://github.com/aaronpq/SSDLC-UNIE-P2.git](https://github.com/aaronpq/SSDLC-UNIE-P2.git)
+   cd SSDLC-UNIE-P2
+
+2. Instalar dependencias:
+
+
 pip install -r requirements.txt
+
+3. Ejecutar la aplicación:
+
 python main.py
-```
 
-Visit: `http://127.0.0.1:5000`
+Visite: http://127.0.0.1:5000 en su navegador.
 
-The database is automatically initialized on first run.
+# Metodología
 
----
+Para este proyecto se aplicó una metodología de Análisis Estático de Seguridad de Aplicaciones (SAST), combinando:
 
-## Default Users
+Análisis Automático: Herramientas como Bandit y Semgrep.
+Análisis Manual: Revisión de lógica de negocio y encadenamiento de vulnerabilidades.
 
-| Username | Password   | Role   | Notes                      |
-|----------|------------|--------|----------------------------|
-| `alice`  | password1  | user   | Standard employee          |
-| `bob`    | password2  | owner  | Owns "Insegura Corp"       |
-| `admin`  | admin123   | admin  | Full access                |
+# Firma de Commits
 
----
+Como requisito de integridad y seguridad en el ciclo de vida de desarrollo, todos los commits de este repositorio están firmados digitalmente. Puede verificar el estado de los cambios mediante la etiqueta "Verified" en el historial de GitHub.
 
-## Project Structure
+Autor: Aaron Perez Quispe
 
-```
-.
-├── main.py                 # Entry point
-├── server.py               # Flask app configuration
-├── db/
-│   └── __init__.py         # Database initialization and helpers
-├── routes/
-│   ├── auth.py             # Login/logout
-│   ├── companies.py        # Company views, dashboard, search
-│   ├── companies_admin.py  # Admin company management
-│   ├── users_admin.py      # Admin user management
-│   └── profile.py          # User profiles
-├── templates/
-│   ├── base.html           # Shared layout
-│   ├── dashboard.html      # Main dashboard
-│   ├── auth/               # Login page
-│   ├── companies/          # Company pages
-│   ├── admin/              # Admin panels
-│   ├── profile/            # User profile pages
-│   └── errors/             # 404, 403 pages
-├── static/
-│   └── css/style.css       # Custom styles
-└── requirements.txt
-```
-
----
-
-## Technologies
-
-- Python 3 + Flask
-- SQLite
-- Bootstrap 5.3
-- Jinja2 + Bootstrap Icons
+Máster en Ciberseguridad - UNIE
